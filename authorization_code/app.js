@@ -44,10 +44,12 @@ app.use(express.static(__dirname + '/public'))
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);
-  res.cookie(stateKey, state); // store our 
+  res.cookie(stateKey, state); // store our state key??
 
   // your application requests authorization
   var scope = 'user-read-private user-read-email user-read-currently-playing';
+  
+  console.log(client_id);
   
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
