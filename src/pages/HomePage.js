@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { isValidSession } from '../utils/functions';
 import { getCurrentlyPlaying, getRecommendations, queueSong, queueAndPlay } from '../utils/API';
 import { useHistory } from 'react-router-dom';
-import _, { set } from 'lodash';
+import _ from 'lodash';
 import ColorThief from 'colorthief';
 
 const HomePage = () => {
@@ -26,7 +26,7 @@ const HomePage = () => {
 
         updateSongs();
 
-        var timer = setInterval(() => updateSongs(), 1000);
+        var timer = setInterval(updateSongs, 1000);
 
         return function cleanup() {
             clearInterval(timer);
@@ -50,7 +50,7 @@ const HomePage = () => {
             };
 
             if(_.isEqual(incomingSong, currentPlayingSong)) {
-                console.log("not new song");
+                // console.log("not new song");
             }
             else {
                 // get currently playing
@@ -83,27 +83,23 @@ const HomePage = () => {
     function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
-      
 
     const paletteChange = async (ref, idx) => {
         const colorThief = new ColorThief();
         const img = ref.current;
-        console.log("img", img)
         if(img != null) {
             const result = colorThief.getColor(img);
-            if(result != null) {
-                if(idx === 0)
-                    setPalettes([rgbToHex(...result), palettes[1]]);
-                else if(idx === 1)
-                    setPalettes([palettes[0], rgbToHex(...result)]);
-            }
+            if(idx === 0)
+                setPalettes([rgbToHex(...result), palettes[1]]);
+            else if(idx === 1)
+                setPalettes([palettes[0], rgbToHex(...result)]);
         }
     }
 
     return(
-        <>
+        <div className="Home">
             <div style={{ 'background-color': palettes[0] }}className="section-1">
-                <div>
+                <div style={{ color: 'white' }}>
                     <b>Now Playing</b> <br></br>
                     {currentPlayingSong.name} - {currentPlayingSong.artists} <br></br>
                     <img 
@@ -118,7 +114,7 @@ const HomePage = () => {
             </div>
             
             <div style={{ 'background-color': palettes[1] }}className="section-2">
-                <div>
+                <div style={{ color: 'white' }}>
                     <b>Recommended</b> <br></br>
                     {recommendationSong.name} - {recommendationSong.artists} <br></br>
                     <img 
@@ -129,11 +125,11 @@ const HomePage = () => {
                         crossOrigin={"anonymous"}
                         onLoad={() => paletteChange(reccRef, 1)}
                     /> <br></br>
-                    <button style={{ color: 'black' }}type="submit" onClick={() => queueAndPlay(recommendationSong.id)}>Play</button>
-                    <button style={{ color: 'black' }}type="submit" onClick={() => queueSong(recommendationSong.id)}>Queue</button>
+                    <button style={{ color: 'black' }} type="submit" onClick={() => queueAndPlay(recommendationSong.id)}>Play</button>
+                    <button style={{ color: 'black' }} type="submit" onClick={() => queueSong(recommendationSong.id)}>Queue</button>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
