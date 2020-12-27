@@ -1,3 +1,9 @@
+## How It Looks Right Now
+<img src="https://github.com/shanjng/song-recommender/blob/main/demo.png " alt=""
+	title="SimpleWeather Demo" width="900" height="400" />
+
+--------------------------------------------------------------------------------------
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
