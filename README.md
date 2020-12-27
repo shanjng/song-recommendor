@@ -1,6 +1,6 @@
 ## How It Looks Right Now
 <img src="https://github.com/shanjng/song-recommender/blob/main/demo.png " alt=""
-	title="SimpleWeather Demo" width="639" height="289" />
+	title="SimpleWeather Demo" width="900" height="400" />
 
 --------------------------------------------------------------------------------------
 
