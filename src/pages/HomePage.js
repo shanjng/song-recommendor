@@ -108,7 +108,7 @@ const HomePage = () => {
                         ref={currRef} 
                         id="current"
                         crossOrigin={"anonymous"}
-                        onLoad={() => paletteChange(currRef, 0)}
+                        onLoad={paletteChange(currRef, 0)}
                     /> <br></br>
                 </div>
             </div>
@@ -123,10 +123,10 @@ const HomePage = () => {
                         ref={reccRef} 
                         id="recommendation"
                         crossOrigin={"anonymous"}
-                        onLoad={() => paletteChange(reccRef, 1)}
+                        onLoad={paletteChange(reccRef, 1)}
                     /> <br></br>
-                    <button style={{ color: 'black' }} type="submit" onClick={() => queueAndPlay(recommendationSong.id)}>Play</button>
-                    <button style={{ color: 'black' }} type="submit" onClick={() => queueSong(recommendationSong.id)}>Queue</button>
+                    <button style={{ color: 'black' }} type="submit" onClick={queueAndPlay(recommendationSong.id)}>Play</button>
+                    <button style={{ color: 'black' }} type="submit" onClick={queueSong(recommendationSong.id)}>Queue</button>
                 </div>
             </div>
         </div>
