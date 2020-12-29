@@ -32,11 +32,26 @@ export const getHashParams = (url) => {
 
 export const isValidSession = () => {
   const currentTime = new Date().getTime(); // in seconds
-  const expiryTime = JSON.parse(localStorage.getItem('expiry_time'));;
+  try {
+    var expiryTime = JSON.parse(localStorage.getItem('expiry_time'));;
+  }
+  catch (e) {
+    console.log('couldnt get localstorage');
+    return false;
+  }
   const isSessionValid = currentTime < expiryTime;
 
   // console.log("Left time: ", expiryTime - currentTime, "ms");
 
   return isSessionValid;
+}
+
+export const rgbToHex = (r, g, b) => {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+const componentToHex = c => {
+  var hex = c.toString(16);
+  return hex.length === 1 ? "0" + hex : hex;
 }
 

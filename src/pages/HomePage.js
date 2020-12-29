@@ -1,134 +1,96 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isValidSession } from '../utils/functions';
-import { getCurrentlyPlaying, getRecommendations, queueSong, queueAndPlay } from '../utils/API';
+import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
 import { useHistory } from 'react-router-dom';
+import Section from '../components/Section';
 import _ from 'lodash';
-import ColorThief from 'colorthief';
 
 const HomePage = () => {
-    const [currentPlayingSong, setCurrentlyPlayingSong] = useState({name: '', id: '', artists: [], imageUrl: ''});
-    const [recommendationSong, setRecommendationSong] = useState({name: '', id: '', artists: [], imageUrl: ''});
-    const [palettes, setPalettes] = useState(['black', 'black']);
+    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({ type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''});
+    const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommendation', name: '', id: '', artists: [], imageUrl: ''});
 
-    var history = useHistory();
-
-    const currRef = useRef(null);
-    const reccRef = useRef(null);
-
-    console.log("RENDERING")
+    const history = useHistory();
 
     useEffect(() => {
-        const isValidSessionBool = isValidSession();
+        // console.log("Rerender of HomePage");
+
+        var isValidSessionBool = isValidSession();
 
         if(!isValidSessionBool) {
             history.push('/login');
-        }
-
-        updateSongs();
-
-        var timer = setInterval(updateSongs, 1000);
-
-        return function cleanup() {
-            clearInterval(timer);
-            timer = null;
-        }
+        };
     });
+    
+    useEffect(() => {
+        // console.log("intial effect including updateSongs");
 
-    const updateSongs = async () => {
-        var result = await getCurrentlyPlaying();
+        const updateSongs = async () => {
+            // console.log("getting")
+            const result = await getCurrentlyPlaying();
 
-        if(result.data === "") {
-            setCurrentlyPlayingSong({ name: 'No Song Playing', artists: [], imageUrl: ''});
-        }
-        else {
-            var songJSONPath = result.data.item;
-            const incomingSong = {
-                name: songJSONPath.name,
-                id: songJSONPath.id,
-                artists: songJSONPath.artists.map(artist => artist.name + " "),
-                imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
-            };
+            var incomingSong = {};
 
-            if(_.isEqual(incomingSong, currentPlayingSong)) {
-                // console.log("not new song");
+            if(result.data === "") {
+                // console.log("in blank")
+                incomingSong = { type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''};
             }
             else {
-                // get currently playing
-                setCurrentlyPlayingSong(incomingSong);
-
-                // get recommendation for new song
-                var incomingReccomendation = await getRecommendations(result.data.item.id);
-
-                console.log("incomingRecommendation", incomingReccomendation);
-
-                songJSONPath = incomingReccomendation.data;
-
-                const recommendation = {
+                var songJSONPath = result.data.item;
+                incomingSong = {
+                    type: 'Now Playing', 
                     name: songJSONPath.name,
                     id: songJSONPath.id,
                     artists: songJSONPath.artists.map(artist => artist.name + " "),
                     imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
-                }
-
-                setRecommendationSong(recommendation);
+                };
             }
-        }
-    }
 
-    function componentToHex(c) {
-        var hex = c.toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-    }
-      
-    function rgbToHex(r, g, b) {
-        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-    }
+            if(!_.isEqual(incomingSong, currentlyPlayingSong)) {
+                // console.log("gonna update");
+                setCurrentlyPlayingSong(incomingSong);
+            }
 
-    const paletteChange = async (ref, idx) => {
-        const colorThief = new ColorThief();
-        const img = ref.current;
-        if(img != null) {
-            const result = colorThief.getColor(img);
-            if(idx === 0)
-                setPalettes([rgbToHex(...result), palettes[1]]);
-            else if(idx === 1)
-                setPalettes([palettes[0], rgbToHex(...result)]);
+            // could put isValidSession code here since on every render (every second) the session is checked since updateSongs forces a render everywhere else
         }
-    }
+
+        updateSongs();
+
+        const timer = setInterval(updateSongs, 1000);
+
+        return () => clearInterval(timer);
+    },[currentlyPlayingSong]);
+
+    useEffect(() => {
+        // get recommendation for new song
+        // console.log("effect for getRecommendations")
+
+        if(currentlyPlayingSong.name === "No Song Playing") { 
+            // console.log("no song not gonna run recommendations"); 
+            return; 
+        } 
+
+        // console.log("getting recommendations")
+        getRecommendations(currentlyPlayingSong.id).then(incomingReccomendation => {
+            const songJSONPath = incomingReccomendation.data;
+
+            const recommendation = {
+                type: 'Recommendation',
+                name: songJSONPath.name,
+                id: songJSONPath.id,
+                artists: songJSONPath.artists.map(artist => artist.name + " "),
+                imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
+            }
+    
+            // console.log('setting recommendation')
+            setRecommendedSong(recommendation); 
+            }
+        );
+    }, [currentlyPlayingSong]);
 
     return(
         <div className="Home">
-            <div style={{ 'background-color': palettes[0] }}className="section-1">
-                <div style={{ color: 'white' }}>
-                    <b>Now Playing</b> <br></br>
-                    {currentPlayingSong.name} - {currentPlayingSong.artists} <br></br>
-                    <img 
-                        src={currentPlayingSong.imageUrl} 
-                        alt=""
-                        ref={currRef} 
-                        id="current"
-                        crossOrigin={"anonymous"}
-                        onLoad={paletteChange(currRef, 0)}
-                    /> <br></br>
-                </div>
-            </div>
-            
-            <div style={{ 'background-color': palettes[1] }}className="section-2">
-                <div style={{ color: 'white' }}>
-                    <b>Recommended</b> <br></br>
-                    {recommendationSong.name} - {recommendationSong.artists} <br></br>
-                    <img 
-                        src={recommendationSong.imageUrl} 
-                        alt=""
-                        ref={reccRef} 
-                        id="recommendation"
-                        crossOrigin={"anonymous"}
-                        onLoad={paletteChange(reccRef, 1)}
-                    /> <br></br>
-                    <button style={{ color: 'black' }} type="submit" onClick={queueAndPlay(recommendationSong.id)}>Play</button>
-                    <button style={{ color: 'black' }} type="submit" onClick={queueSong(recommendationSong.id)}>Queue</button>
-                </div>
-            </div>
+            <Section song={currentlyPlayingSong} />
+            <Section song={recommendedSong} />
         </div>
     );
 };

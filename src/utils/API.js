@@ -28,8 +28,6 @@ export const getRecommendations = async seedTrackId => {
   var response = await axios.get(url);
   const firstRecommendationSongId = response.data.tracks[0].id;
 
-  console.log(response);
-
   url = ('https://api.spotify.com/v1/tracks/' + firstRecommendationSongId);
 
   response = await axios.get(url);
