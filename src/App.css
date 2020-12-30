@@ -1,10 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+* {
+  /* box-sizing: border-box; */
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+}
+
 .App {
   width: 100vw;
   height: 100vh;
 }
 
-.Home {
-  height: 100%;
+img {
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+img:hover {
+  cursor: pointer
+}
+
+.page {
+  height: 93vh;
 }
 
 .section {

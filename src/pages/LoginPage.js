@@ -20,7 +20,7 @@ const LoginPage = () =>  {
     };
     
     return(
-        <div>
+        <div className="login">
             <h1>Login Page</h1>
             <button className="spotify-login" type="submit" onClick={handleLogin}>
                 Login to Spotify

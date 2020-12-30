@@ -12,7 +12,7 @@ const setAuthHeader = () => {
   }
 };
 
-export const getCurrentlyPlaying = async () => {
+export const getCurrentlyPlaying = () => {
   setAuthHeader();
   const response = axios.get('https://api.spotify.com/v1/me/player/currently-playing');
   return response;
@@ -35,7 +35,7 @@ export const getRecommendations = async seedTrackId => {
   return response;
 }
 
-export const queueSong = async id => {
+export const queueSong = id => {
   setAuthHeader();
   const uri = `spotify:track:${id}`;
   const response = axios.post(`https://api.spotify.com/v1/me/player/queue?uri=${uri}`);
@@ -43,9 +43,17 @@ export const queueSong = async id => {
   return response;
 }
 
-export const queueAndPlay = async id => {
+export const queueAndPlaySong = async id => {
   await queueSong(id);
   const response = axios.post('https://api.spotify.com/v1/me/player/next');
   
+  return response;
+}
+
+export const getAllPlaylists = () => {
+  setAuthHeader();
+  const url = 'https://api.spotify.com/v1/me/playlists';
+  const response = axios.get(url);
+
   return response;
 }

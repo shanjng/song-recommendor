@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { isValidSession } from '../utils/functions';
 import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
 import { useHistory } from 'react-router-dom';
-import Section from '../components/Section';
+import Section from '../components/Section/Section';
 import _ from 'lodash';
 
 const HomePage = () => {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({ type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''});
     const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommendation', name: '', id: '', artists: [], imageUrl: ''});
-
+    
     const history = useHistory();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const HomePage = () => {
 
         const updateSongs = async () => {
             // console.log("getting")
-            const result = await getCurrentlyPlaying();
+            var result = await getCurrentlyPlaying();
 
             var incomingSong = {};
 
@@ -47,7 +47,21 @@ const HomePage = () => {
 
             if(!_.isEqual(incomingSong, currentlyPlayingSong)) {
                 // console.log("gonna update");
+
+                result = await getRecommendations(incomingSong.id);
+                
+                const songJSONPath = result.data;
+        
+                const incomingRecommendation = {
+                        type: 'Recommendation',
+                        name: songJSONPath.name,
+                        id: songJSONPath.id,
+                        artists: songJSONPath.artists.map(artist => artist.name + " "),
+                        imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
+                }
+        
                 setCurrentlyPlayingSong(incomingSong);
+                setRecommendedSong(incomingRecommendation); 
             }
 
             // could put isValidSession code here since on every render (every second) the session is checked since updateSongs forces a render everywhere else
@@ -60,35 +74,8 @@ const HomePage = () => {
         return () => clearInterval(timer);
     },[currentlyPlayingSong]);
 
-    useEffect(() => {
-        // get recommendation for new song
-        // console.log("effect for getRecommendations")
-
-        if(currentlyPlayingSong.name === "No Song Playing") { 
-            // console.log("no song not gonna run recommendations"); 
-            return; 
-        } 
-
-        // console.log("getting recommendations")
-        getRecommendations(currentlyPlayingSong.id).then(incomingReccomendation => {
-            const songJSONPath = incomingReccomendation.data;
-
-            const recommendation = {
-                type: 'Recommendation',
-                name: songJSONPath.name,
-                id: songJSONPath.id,
-                artists: songJSONPath.artists.map(artist => artist.name + " "),
-                imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
-            }
-    
-            // console.log('setting recommendation')
-            setRecommendedSong(recommendation); 
-            }
-        );
-    }, [currentlyPlayingSong]);
-
     return(
-        <div className="Home">
+        <div className="home page">
             <Section song={currentlyPlayingSong} />
             <Section song={recommendedSong} />
         </div>

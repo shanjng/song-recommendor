@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { rgbToHex } from '../utils/functions';
-import { queueSong, queueAndPlay } from '../utils/API';
+import { rgbToHex } from '../../utils/functions';
+import { queueSong, queueAndPlaySong } from '../../utils/API';
 import ColorThief from 'colorthief';
 
 const Section = (props) => {
@@ -26,9 +26,10 @@ const Section = (props) => {
     return (
         <div style={{ backgroundColor: palette }} className="section">
             <div style={{ color: 'white'}}>
-                <b>{ type }</b> 
-                <br />
-                {song.name === 'No Song Playing' ? '' : `${song.name} - ${song.artists}`}
+                <p>
+                    <b>{ type }</b> <br />
+                    {song.name === 'No Song Playing' ? '' : `${song.name} - ${song.artists}`}
+                </p>
                 <br />
                 <img 
                     src={song.imageUrl} 
@@ -39,8 +40,9 @@ const Section = (props) => {
                 /> 
             {type === 'Recommendation' && 
             (<p>
-                <button style={{ color: 'black' }} type="submit" onClick={() => queueAndPlay(song.id)}>Play</button>
-                <button style={{ color: 'black' }} type="submit" onClick={() => queueSong(song.id)}>Queue</button> 
+                <button style={{ color: 'black' }} onClick={() => queueAndPlaySong(song.id)}>Play</button>
+                <button style={{ color: 'black' }} onClick={() => queueSong(song.id)}>Queue</button> 
+                <button style={{ color: 'black' }} onClick={() => queueSong(song.id)}>Next</button> 
             </p>)}
             </div>
         </div>
