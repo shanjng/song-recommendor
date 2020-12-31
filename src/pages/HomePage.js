@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { isValidSession } from '../utils/functions';
 import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
 import { useHistory } from 'react-router-dom';
-import Section from '../components/Section/Section';
+import CurrentlyPlayingSection from '../components/Section/CurrentlyPlayingSection';
+import RecommendedSection from '../components/Section/CurrentlyPlayingSection';
+import LyricsSection from '../components/Section/LyricsSection';
 import './HomePage.css';
 import _ from 'lodash';
 
 const HomePage = () => {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({ type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''});
-    const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommendation', name: '', id: '', artists: [], imageUrl: ''});
-    
+    const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommended', name: '', id: '', artists: [], imageUrl: ''});
+
     const history = useHistory();
 
     useEffect(() => {
@@ -42,7 +44,7 @@ const HomePage = () => {
                     name: songJSONPath.name,
                     id: songJSONPath.id,
                     artists: songJSONPath.artists.map(artist => artist.name + " "),
-                    imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
+                    imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
                 };
             }
 
@@ -54,11 +56,11 @@ const HomePage = () => {
                 const songJSONPath = result.data;
         
                 const incomingRecommendation = {
-                        type: 'Recommendation',
+                        type: 'Recommended',
                         name: songJSONPath.name,
                         id: songJSONPath.id,
                         artists: songJSONPath.artists.map(artist => artist.name + " "),
-                        imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 2].url,
+                        imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
                 }
         
                 setCurrentlyPlayingSong(incomingSong);
@@ -76,9 +78,10 @@ const HomePage = () => {
     },[currentlyPlayingSong]);
     
     return(
-        <div className="home page">
-            <Section song={currentlyPlayingSong}/>
-            <Section song={recommendedSong}/>
+        <div className="home">
+            <CurrentlyPlayingSection className="section" song={currentlyPlayingSong}/>
+            <RecommendedSection className="section" song={recommendedSong}/>
+            <LyricsSection className="section" song={currentlyPlayingSong}></LyricsSection>
         </div>
     );
 };

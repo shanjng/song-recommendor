@@ -1,6 +1,7 @@
 import React from 'react';
 import { generateRandomString } from '../utils/functions';
 import * as QueryString from "query-string"
+import './LoginPage.css';
 
 const LoginPage = () =>  {
     var scope = 'user-read-private user-read-email user-read-currently-playing user-modify-playback-state';
@@ -22,9 +23,12 @@ const LoginPage = () =>  {
     return(
         <div className="login">
             <h1>Login Page</h1>
-            <button className="spotify-login" type="submit" onClick={handleLogin}>
+            <p>
+                <button className="spotify-login" type="submit" onClick={handleLogin}>
                 Login to Spotify
-            </button>
+                </button>
+            </p>
+            
         </div>
     );
 }

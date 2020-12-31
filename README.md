@@ -1,5 +1,5 @@
 ## How It Looks Right Now
-<img src="https://github.com/shanjng/song-recommender/blob/main/demo.png " alt=""
+<img src="https://github.com/shanjng/vibe-check/blob/main/demo.png " alt=""
 	title="SimpleWeather Demo" width="900" height="400" />
 
 --------------------------------------------------------------------------------------

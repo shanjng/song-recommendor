@@ -1,10 +1,11 @@
 .navbar {
-    background-color: #060b26;
+    background-color: transparent;
     z-index: 1; /* Stay on top */
     height: 8%;
     display:flex;
     justify-content: flex-start;
     align-items: center;
+    /*  previous background-color #060b26 */
 }
 
 .navbar-menu {

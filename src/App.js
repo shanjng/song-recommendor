@@ -10,14 +10,16 @@ import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import RedirectPage from './pages/RedirectPage'
 import PlaylistsPage from './pages/PlaylistsPage';
-
 import Navbar from './components/Navbar/Navbar';
+import './App.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        {
+          window.location.pathname === '/login' ? null : <Navbar className="navbar"/>
+        }
 
         <Switch>
           <Route exact path="/" component={HomePage} />
