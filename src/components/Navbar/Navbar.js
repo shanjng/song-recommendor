@@ -15,23 +15,23 @@ const Navbar = () => {
         <>
             <IconContext.Provider value={{ color: "#0f00ed" }}>
                 <div className='navbar'>
-                    <Link to='#' className='menu-bars' onClick={showSidebar}>
+                    <Link to='#' className='navbar-main-icon' onClick={showSidebar}>
                         <FaIcons.FaBars />
                     </Link>
                 </div>
             </IconContext.Provider>
-            <nav className={ sidebar ? 'nav-menu active' : 'nav-menu' }>
-                <ul className='nav-menu-items' onClick={showSidebar}>
+            <nav className={ sidebar ? 'navbar-menu active' : 'navbar-menu' }>
+                <ul className='navbar-menu-list' onClick={showSidebar}>
                     <IconContext.Provider value={{ color: "#0f00ed" }}>
-                    <li className='navbar-toggle'>
-                        <Link to='#' className='menu-bars'>
+                    <li className='navbar-main-icon'>
+                        <Link to='#'>
                             <AiIcons.AiOutlineClose />
                         </Link>
                     </li>
                     </IconContext.Provider>
                     {SidebarItems.map((item, idx) => {
                         return (
-                            <li key={idx} className='nav-list-item'>
+                            <li key={idx} className='navbar-menu-list-item'>
                                 <Link to={item.path}>
                                     {item.icon}
                                     <span>
