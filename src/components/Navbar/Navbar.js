@@ -13,7 +13,7 @@ const Navbar = () => {
 
     return (
         <>
-            <IconContext.Provider value={{ color: "#0f00ed" }}>
+            <IconContext.Provider value={{ color: "red" }}>
                 <div className='navbar'>
                     <Link to='#' className='navbar-main-icon' onClick={showSidebar}>
                         <FaIcons.FaBars />
@@ -22,7 +22,7 @@ const Navbar = () => {
             </IconContext.Provider>
             <nav className={ sidebar ? 'navbar-menu active' : 'navbar-menu' }>
                 <ul className='navbar-menu-list' onClick={showSidebar}>
-                    <IconContext.Provider value={{ color: "#0f00ed" }}>
+                    <IconContext.Provider value={{ color: "red" }}>
                     <li className='navbar-main-icon'>
                         <Link to='#'>
                             <AiIcons.AiOutlineClose />

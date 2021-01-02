@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as QueryString from "query-string";
+const SPOTIFY_BASE_URL = 'https://api.spotify.com/v1';
 
 const setSpotifyAuthHeader = () => {
   try {
@@ -12,11 +12,6 @@ const setSpotifyAuthHeader = () => {
   }
 };
 
-// const setMusixMatchHeader = () => {
-//   const apiKey = 'c779594d43223e0b40345e1b61b2c18c'
-//   axios.defaults.headers.common['Authorization'] = `Bearer ${apiKey}`;
-// }
-
 export const getCurrentlyPlaying = () => {
   setSpotifyAuthHeader();
   const response = axios.get('https://api.spotify.com/v1/me/player/currently-playing');
@@ -25,17 +20,19 @@ export const getCurrentlyPlaying = () => {
 
 export const getRecommendations = async seedTrackId => {
   setSpotifyAuthHeader();
-  var url = ('https://api.spotify.com/v1/recommendations?' + 
-    QueryString.stringify({
-      seed_tracks: seedTrackId,
-    }));
 
-  var response = await axios.get(url);
+  var response = await axios.get(`${SPOTIFY_BASE_URL}/recommendations`, {
+    params: {
+      seed_tracks: seedTrackId,
+    }
+  });
   const firstRecommendationSongId = response.data.tracks[0].id;
 
-  url = ('https://api.spotify.com/v1/tracks/' + firstRecommendationSongId);
-
-  response = await axios.get(url);
+  response = await axios.get(`${SPOTIFY_BASE_URL}/tracks/${firstRecommendationSongId}`, {
+    params: {
+      seed_tracks: seedTrackId,
+    }
+  });
 
   return response;
 }
@@ -63,13 +60,25 @@ export const getAllPlaylists = () => {
   return response;
 }
 
-export const getLyrics = (trackName) => {
-  // setMusixMatchHeader();
+export const getSongLyrics = async (songName, artist) => {
+  const url = `http://localhost:8000/lyrics/${artist}/${songName}`;
+  console.log("hitting: ", url);
+  return axios.get(url);
+}
 
-  const response = axios.get('https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.search?' + QueryString.stringify({
-    api_key: 'c779594d43223e0b40345e1b61b2c18c',
-    q_track: trackName,
-  }));
+export const getMusicVideo = async (songName, artist) => {
+  delete axios.defaults.headers.common["Authorization"];
 
-  return response;
+  const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
+
+  const url = 'https://www.googleapis.com/youtube/v3/search';
+
+  return axios.get(url, {
+    params: {
+      part: 'snippet',
+      maxResults: 5,
+      key: apiKey,
+      q: songName + " " + artist,
+    }
+  });
 }

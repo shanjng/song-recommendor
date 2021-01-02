@@ -2,39 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { isValidSession } from '../utils/functions';
 import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
 import { useHistory } from 'react-router-dom';
-import CurrentlyPlayingSection from '../components/Section/CurrentlyPlayingSection';
-import RecommendedSection from '../components/Section/CurrentlyPlayingSection';
-import LyricsSection from '../components/Section/LyricsSection';
+import CurrentlyPlayingSection from '../components/Sections/CurrentlyPlayingSection';
+import RecommendedSection from '../components/Sections/RecommendedSection';
+import LyricsSection from '../components/Sections/LyricsSection';
+import MusicVideoSection from '../components/Sections/MusicVideoSection';
 import './HomePage.css';
 import _ from 'lodash';
 
 const HomePage = () => {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({ type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''});
     const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommended', name: '', id: '', artists: [], imageUrl: ''});
+    const [mouseIdle, setMouseIdle] = useState(false);
+    // const [firstLoaded, setFirstLoaded] = useState(false);
+    // const [secondLoaded, setSecondLoaded] = useState(false);
+    // const [thirdLoaded, setThirdLoaded] = useState(false);
+    // const sectionStates = { currentlyPlaying: firstLoaded, recommended: secondLoaded, lyrics: thirdLoaded };
+    // const setters = { currentlyPlaying: setFirstLoaded, recommended: setSecondLoaded, lyrics: setThirdLoaded };
 
     const history = useHistory();
 
-    useEffect(() => {
-        // console.log("Rerender of HomePage");
-
-        var isValidSessionBool = isValidSession();
-
-        if(!isValidSessionBool) {
-            history.push('/login');
-        };
-    });
+    // useEffect(() => console.log("Rerendering Home Page"));
     
     useEffect(() => {
-        // console.log("intial effect including updateSongs");
-
         const updateSongs = async () => {
-            // console.log("getting")
+            const isValidSessionBool = isValidSession();
+
+            if(!isValidSessionBool) {
+                history.push('/login');
+                return;
+            };
+
             var result = await getCurrentlyPlaying();
 
             var incomingSong = {};
 
             if(result.data === "" || result.data.currently_playing_type === "unknown") {
-                // console.log("in blank")
                 incomingSong = { type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''};
             }
             else {
@@ -49,8 +51,6 @@ const HomePage = () => {
             }
 
             if(!_.isEqual(incomingSong, currentlyPlayingSong)) {
-                // console.log("gonna update");
-
                 result = await getRecommendations(incomingSong.id);
                 
                 const songJSONPath = result.data;
@@ -66,8 +66,6 @@ const HomePage = () => {
                 setCurrentlyPlayingSong(incomingSong);
                 setRecommendedSong(incomingRecommendation); 
             }
-
-            // could put isValidSession code here since on every render (every second) the session is checked since updateSongs forces a render everywhere else
         }
 
         updateSongs();
@@ -75,13 +73,36 @@ const HomePage = () => {
         const timer = setInterval(updateSongs, 1000);
 
         return () => clearInterval(timer);
-    },[currentlyPlayingSong]);
+    },[currentlyPlayingSong, history]);
+
+    var timer;
+    const handleMouseMove = e => {
+        setMouseIdle(false);
+        // clear previous timer
+        if(timer) {
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(() => {
+            setMouseIdle(true);
+        }, 3000);
+    };
+
+    // const handleLoaded = name => {
+    //     if(sectionStates[name] !== true) {
+    //         setters[name](true);
+    //         if(firstLoaded === true && secondLoaded === true && thirdLoaded === true)
+    //             // window.scrollTo(0, 0);
+    //             return;
+    //     }
+    // }
     
     return(
-        <div className="home">
+        <div className={"home" + (mouseIdle ? " mouse-idle" : " mouse-active")} onMouseMove={e => handleMouseMove(e)}>
             <CurrentlyPlayingSection className="section" song={currentlyPlayingSong}/>
             <RecommendedSection className="section" song={recommendedSong}/>
-            <LyricsSection className="section" song={currentlyPlayingSong}></LyricsSection>
+            <LyricsSection className="section" song={currentlyPlayingSong}/>
+            <MusicVideoSection className="section" song={currentlyPlayingSong}></MusicVideoSection>
         </div>
     );
 };
