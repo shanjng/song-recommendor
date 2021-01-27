@@ -20,7 +20,7 @@ const MusicVideoSection = (props) => {
 
         const firstResultVideoId = result.data.items[0].id.videoId;
 
-        const firstResultVideoUrl = `https://www.youtube.com/embed/${firstResultVideoId}`;
+        const firstResultVideoUrl = `https://www.youtube.com/embed/${firstResultVideoId}?autoplay=1&mute=1`;
 
         setVideoUrl(firstResultVideoUrl);
       })
