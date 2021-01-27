@@ -10,9 +10,9 @@
 }
 
 .mouse-active {
-    cursor: default;
+  cursor: default;
 }
 
 .mouse-idle {
-    cursor: none;
+  cursor: none;
 }

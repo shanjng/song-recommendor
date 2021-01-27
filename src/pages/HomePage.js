@@ -8,104 +8,133 @@ import LyricsSection from '../components/Sections/LyricsSection';
 import MusicVideoSection from '../components/Sections/MusicVideoSection';
 import './HomePage.css';
 import _ from 'lodash';
+import ReactFullpage from '@fullpage/react-fullpage';
 
 const HomePage = () => {
-    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({ type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''});
-    const [recommendedSong, setRecommendedSong] = useState({ type: 'Recommended', name: '', id: '', artists: [], imageUrl: ''});
-    const [mouseIdle, setMouseIdle] = useState(false);
-    // const [firstLoaded, setFirstLoaded] = useState(false);
-    // const [secondLoaded, setSecondLoaded] = useState(false);
-    // const [thirdLoaded, setThirdLoaded] = useState(false);
-    // const sectionStates = { currentlyPlaying: firstLoaded, recommended: secondLoaded, lyrics: thirdLoaded };
-    // const setters = { currentlyPlaying: setFirstLoaded, recommended: setSecondLoaded, lyrics: setThirdLoaded };
+  const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({
+    type: 'Now Playing',
+    name: 'No Song Playing',
+    artists: [],
+    imageUrl: '',
+  });
+  const [recommendedSong, setRecommendedSong] = useState({
+    type: 'Recommended',
+    name: '',
+    id: '',
+    artists: [],
+    imageUrl: '',
+  });
+  const [mouseIdle, setMouseIdle] = useState(false);
+  // const [firstLoaded, setFirstLoaded] = useState(false);
+  // const [secondLoaded, setSecondLoaded] = useState(false);
+  // const [thirdLoaded, setThirdLoaded] = useState(false);
+  // const sectionStates = { currentlyPlaying: firstLoaded, recommended: secondLoaded, lyrics: thirdLoaded };
+  // const setters = { currentlyPlaying: setFirstLoaded, recommended: setSecondLoaded, lyrics: setThirdLoaded };
 
-    const history = useHistory();
+  const history = useHistory();
 
-    // useEffect(() => console.log("Rerendering Home Page"));
-    
-    useEffect(() => {
-        const updateSongs = async () => {
-            const isValidSessionBool = isValidSession();
+  // useEffect(() => console.log("Rerendering Home Page"));
 
-            if(!isValidSessionBool) {
-                history.push('/login');
-                return;
-            };
+  useEffect(() => {
+    const updateSongs = async () => {
+      const isValidSessionBool = isValidSession();
 
-            var result = await getCurrentlyPlaying();
+      if (!isValidSessionBool) {
+        history.push('/login');
+        return;
+      }
 
-            var incomingSong = {};
+      var result = await getCurrentlyPlaying();
 
-            if(result.data === "" || result.data.currently_playing_type === "unknown") {
-                incomingSong = { type: 'Now Playing', name: 'No Song Playing', artists: [], imageUrl: ''};
-            }
-            else {
-                var songJSONPath = result.data.item;
-                incomingSong = {
-                    type: 'Now Playing', 
-                    name: songJSONPath.name,
-                    id: songJSONPath.id,
-                    artists: songJSONPath.artists.map(artist => artist.name + " "),
-                    imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
-                };
-            }
+      var incomingSong = {};
 
-            if(!_.isEqual(incomingSong, currentlyPlayingSong)) {
-                result = await getRecommendations(incomingSong.id);
-                
-                const songJSONPath = result.data;
-        
-                const incomingRecommendation = {
-                        type: 'Recommended',
-                        name: songJSONPath.name,
-                        id: songJSONPath.id,
-                        artists: songJSONPath.artists.map(artist => artist.name + " "),
-                        imageUrl: songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
-                }
-        
-                setCurrentlyPlayingSong(incomingSong);
-                setRecommendedSong(incomingRecommendation); 
-            }
-        }
+      if (
+        result.data === '' ||
+        result.data.currently_playing_type === 'unknown'
+      ) {
+        incomingSong = {
+          type: 'Now Playing',
+          name: 'No Song Playing',
+          artists: [],
+          imageUrl: '',
+        };
+      } else {
+        var songJSONPath = result.data.item;
+        incomingSong = {
+          type: 'Now Playing',
+          name: songJSONPath.name,
+          id: songJSONPath.id,
+          artists: songJSONPath.artists.map((artist) => artist.name + ' '),
+          imageUrl:
+            songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
+        };
+      }
 
-        updateSongs();
+      if (!_.isEqual(incomingSong, currentlyPlayingSong)) {
+        result = await getRecommendations(incomingSong.id);
 
-        const timer = setInterval(updateSongs, 1000);
+        const songJSONPath = result.data;
 
-        return () => clearInterval(timer);
-    },[currentlyPlayingSong, history]);
+        const incomingRecommendation = {
+          type: 'Recommended',
+          name: songJSONPath.name,
+          id: songJSONPath.id,
+          artists: songJSONPath.artists.map((artist) => artist.name + ' '),
+          imageUrl:
+            songJSONPath.album.images[songJSONPath.album.images.length - 3].url,
+        };
 
-    var timer;
-    const handleMouseMove = e => {
-        setMouseIdle(false);
-        // clear previous timer
-        if(timer) {
-            clearTimeout(timer);
-        }
-
-        timer = setTimeout(() => {
-            setMouseIdle(true);
-        }, 3000);
+        setCurrentlyPlayingSong(incomingSong);
+        setRecommendedSong(incomingRecommendation);
+      }
     };
 
-    // const handleLoaded = name => {
-    //     if(sectionStates[name] !== true) {
-    //         setters[name](true);
-    //         if(firstLoaded === true && secondLoaded === true && thirdLoaded === true)
-    //             // window.scrollTo(0, 0);
-    //             return;
-    //     }
-    // }
-    
-    return(
-        <div className={"home" + (mouseIdle ? " mouse-idle" : " mouse-active")} onMouseMove={e => handleMouseMove(e)}>
-            <CurrentlyPlayingSection className="section" song={currentlyPlayingSong}/>
-            <RecommendedSection className="section" song={recommendedSong}/>
-            <LyricsSection className="section" song={currentlyPlayingSong}/>
-            <MusicVideoSection className="section" song={currentlyPlayingSong}></MusicVideoSection>
-        </div>
-    );
+    updateSongs();
+
+    const timer = setInterval(updateSongs, 1000);
+
+    return () => clearInterval(timer);
+  }, [currentlyPlayingSong, history]);
+
+  var timer;
+  const handleMouseMove = (e) => {
+    setMouseIdle(false);
+    // clear previous timer
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      setMouseIdle(true);
+    }, 3000);
+  };
+
+  // const handleLoaded = name => {
+  //     if(sectionStates[name] !== true) {
+  //         setters[name](true);
+  //         if(firstLoaded === true && secondLoaded === true && thirdLoaded === true)
+  //             // window.scrollTo(0, 0);
+  //             return;
+  //     }
+  // }
+
+  return (
+    <div
+      className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
+      onMouseMove={(e) => handleMouseMove(e)}
+    >
+      <CurrentlyPlayingSection
+        className='section'
+        song={currentlyPlayingSong}
+      />
+      <RecommendedSection className='section' song={recommendedSong} />
+      <LyricsSection className='section' song={currentlyPlayingSong} />
+      <MusicVideoSection
+        className='section'
+        song={currentlyPlayingSong}
+      ></MusicVideoSection>
+    </div>
+  );
 };
 
 export default HomePage;
-

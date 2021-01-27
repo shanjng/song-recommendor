@@ -1,89 +1,114 @@
 .section {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background-color: gray;
-    color: white;
-    text-align: center;
-    scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+  color: white;
+  text-align: center;
+  scroll-snap-align: start;
 }
 
-.section-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    height: 90%;
-    width: 70%;
+.section .player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+}
+
+.section .info {
+  height: 80%;
+  width: 70%;
+  color: white;
+}
+
+@media only screen and (max-width: 480px) {
 }
 
 .lyrics {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    font-size: 1rem;
-    height: 90%;
-    width: 80%;
-    overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 1rem;
+  max-height: 90%;
+  max-width: 80%;
+  overflow-y: scroll;
 }
 
-.section-info p {
-    margin-top: 10px; /*already has preset margin cause its a <p> tag*/ 
-    text-shadow: 1px 1px black;
-    font-size: 2rem;
+.section .info p {
+  margin-top: 10px; /*already has preset margin cause its a <p> tag*/
+  text-shadow: 1px 1px black;
+  font-size: 2rem;
 }
 
-.section-info button {
-    border-radius: 2px;
-    margin: 2px;
+.section .info button {
+  border-radius: 2px;
+  margin: 2px;
+}
+
+.section .player .arrow {
+  font-size: 2rem;
 }
 
 .img-wrapper {
-    display: inline-block;
-    position: relative;
-    margin-bottom: 10px;
-    height: 70%;
-    width: auto;
+  display: inline-block;
+  position: relative;
+  margin-bottom: 10px;
+  height: 70%;
 }
 
 .img-wrapper img {
-    max-height: 100%;
-    /* filter: drop-shadow(5px 5px 5px #222); */
+  height: 100%;
+}
+
+@media only screen and (max-width: 480px) {
+  .img-wrapper {
+    height: auto;
+    width: 100%;
+  }
+
+  .img-wrapper img {
+    height: auto;
+    width: 100%;
+  }
+
+  .section iframe {
+    height: auto;
+  }
 }
 
 .play-button-overlay {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgb(0,0,0,0.72);
-    visibility: hidden;
-    opacity: 0;
-    transition: .5s opacity ease;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgb(0, 0, 0, 0.72);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s opacity ease;
 }
 
 .img-wrapper:hover .play-button-overlay {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .play-button-icon {
-    font-size: 50px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: rgb(255,255,255,0.9);
-    transition: .3s ease;
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(255, 255, 255, 0.9);
+  transition: 0.3s ease;
 }
 
 .play-button-icon:hover {
-    font-size: 60px;
-    cursor: pointer;
-    color: rgb(255,255,255,1);
+  font-size: 60px;
+  cursor: pointer;
+  color: rgb(255, 255, 255, 1);
 }
