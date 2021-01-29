@@ -9,6 +9,7 @@ import MusicVideoSection from '../components/Sections/MusicVideoSection';
 import './HomePage.css';
 import _ from 'lodash';
 import ReactFullpage from '@fullpage/react-fullpage';
+import updownkeys from '../assets/up-down-keys.png';
 
 const HomePage = () => {
   const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState({
@@ -123,16 +124,21 @@ const HomePage = () => {
       className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
       onMouseMove={(e) => handleMouseMove(e)}
     >
-      <CurrentlyPlayingSection
-        className='section'
-        song={currentlyPlayingSong}
-      />
-      <RecommendedSection className='section' song={recommendedSong} />
-      <LyricsSection className='section' song={currentlyPlayingSong} />
-      <MusicVideoSection
-        className='section'
-        song={currentlyPlayingSong}
-      ></MusicVideoSection>
+      <div className='scroll-container'>
+        <CurrentlyPlayingSection
+          className='section'
+          song={currentlyPlayingSong}
+        />
+        <RecommendedSection className='section' song={recommendedSong} />
+        <LyricsSection className='section' song={currentlyPlayingSong} />
+        <MusicVideoSection
+          className='section'
+          song={currentlyPlayingSong}
+        ></MusicVideoSection>
+      </div>
+      <div className='updownkeys-img'>
+        <img src={updownkeys} alt='' />
+      </div>
     </div>
   );
 };

@@ -1,8 +1,23 @@
 .home {
+}
+
+.scroll-container {
   width: 100vw;
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
+}
+
+.updownkeys-img {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  margin: 10px;
+}
+
+.updownkeys-img img {
+  width: 100%;
 }
 
 ::-webkit-scrollbar {

@@ -44,7 +44,8 @@ const LoginPage = () => {
       <img src={logo} alt='' />
       <p>
         <button className='spotify-login' type='submit' onClick={handleLogin}>
-          <GiIcons.GiBrainFreeze></GiIcons.GiBrainFreeze>
+          {/* <GiIcons.GiBrainFreeze></GiIcons.GiBrainFreeze> */}
+          LOGIN
         </button>
       </p>
     </div>
