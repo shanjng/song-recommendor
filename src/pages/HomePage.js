@@ -26,15 +26,8 @@ const HomePage = () => {
     imageUrl: '',
   });
   const [mouseIdle, setMouseIdle] = useState(false);
-  // const [firstLoaded, setFirstLoaded] = useState(false);
-  // const [secondLoaded, setSecondLoaded] = useState(false);
-  // const [thirdLoaded, setThirdLoaded] = useState(false);
-  // const sectionStates = { currentlyPlaying: firstLoaded, recommended: secondLoaded, lyrics: thirdLoaded };
-  // const setters = { currentlyPlaying: setFirstLoaded, recommended: setSecondLoaded, lyrics: setThirdLoaded };
 
   const history = useHistory();
-
-  // useEffect(() => console.log("Rerendering Home Page"));
 
   useEffect(() => {
     const updateSongs = async () => {
@@ -110,37 +103,44 @@ const HomePage = () => {
     }, 3000);
   };
 
-  // const handleLoaded = name => {
-  //     if(sectionStates[name] !== true) {
-  //         setters[name](true);
-  //         if(firstLoaded === true && secondLoaded === true && thirdLoaded === true)
-  //             // window.scrollTo(0, 0);
-  //             return;
-  //     }
-  // }
-
-  return (
-    <div
-      className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
-      onMouseMove={(e) => handleMouseMove(e)}
-    >
-      <div className='scroll-container'>
-        <CurrentlyPlayingSection
-          className='section'
-          song={currentlyPlayingSong}
-        />
-        <RecommendedSection className='section' song={recommendedSong} />
-        <LyricsSection className='section' song={currentlyPlayingSong} />
-        <MusicVideoSection
-          className='section'
-          song={currentlyPlayingSong}
-        ></MusicVideoSection>
-      </div>
-      <div className='updownkeys-img'>
-        <img src={updownkeys} alt='' />
-      </div>
-    </div>
+  // return (
+  //   <div
+  //     className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
+  //     onMouseMove={(e) => handleMouseMove(e)}
+  //   >
+  //     <div className='scroll-container'>
+  //       <CurrentlyPlayingSection song={currentlyPlayingSong} />
+  //       <RecommendedSection song={recommendedSong} />
+  //       <LyricsSection song={currentlyPlayingSong} />
+  //       {/* <MusicVideoSection
+  //         className='section'
+  //         song={currentlyPlayingSong}
+  //       ></MusicVideoSection> */}
+  //     </div>
+  //     <div className='updownkeys-img'>
+  //       <img src={updownkeys} alt='' />
+  //     </div>
+  //   </div>
+  // );
+  const FullPage = () => (
+    <ReactFullpage
+      render={({ state, fullpageApi }) => {
+        return (
+          <ReactFullpage.Wrapper>
+            <CurrentlyPlayingSection
+              className='section'
+              song={currentlyPlayingSong}
+            />
+            <div className='section'>
+              <p>something 2</p>
+            </div>
+          </ReactFullpage.Wrapper>
+        );
+      }}
+    />
   );
+
+  return <FullPage />;
 };
 
 export default HomePage;
