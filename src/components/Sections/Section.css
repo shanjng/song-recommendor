@@ -1,26 +1,21 @@
 .section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
   background-color: gray;
   color: white;
   text-align: center;
-  scroll-snap-align: start;
 }
 
-.section .player {
+.player {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80%;
 }
 
-.section .info {
-  height: 80%;
+.info {
+  /* height: 80%;
   width: 70%;
-  color: white;
+  color: white; */
+  height: 80%;
 }
 
 @media only screen and (max-width: 480px) {
@@ -37,18 +32,18 @@
   overflow-y: scroll;
 }
 
-.section .info p {
+.info p {
   margin-top: 10px; /*already has preset margin cause its a <p> tag*/
   text-shadow: 1px 1px black;
   font-size: 2rem;
 }
 
-.section .info button {
+.info button {
   border-radius: 2px;
   margin: 2px;
 }
 
-.section .player .arrow {
+.player .arrow {
   font-size: 2rem;
 }
 
@@ -74,7 +69,7 @@
     width: 100%;
   }
 
-  .section iframe {
+  iframe {
     height: auto;
   }
 }

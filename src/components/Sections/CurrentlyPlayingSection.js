@@ -44,9 +44,6 @@ const CurrentlyPlayingSection = (props) => {
 
   return (
     <div style={{ backgroundColor: palette[0] }} className='section'>
-      {/* <div className='arrow'>
-        <BsIcons.BsChevronLeft></BsIcons.BsChevronLeft>
-      </div> */}
       <div className='info'>
         <p>
           <b>{type}</b> <br />
@@ -71,9 +68,6 @@ const CurrentlyPlayingSection = (props) => {
           </div>
         </div>
       </div>
-      {/* <div className='arrow'>
-        <BsIcons.BsChevronRight></BsIcons.BsChevronRight>
-      </div> */}
     </div>
   );
 };

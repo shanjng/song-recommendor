@@ -4,7 +4,7 @@ import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
 import { useHistory } from 'react-router-dom';
 import CurrentlyPlayingSection from '../components/Sections/CurrentlyPlayingSection';
 import RecommendedSection from '../components/Sections/RecommendedSection';
-import LyricsSection from '../components/Sections/LyricsSection';
+// import LyricsSection from '../components/Sections/LyricsSection';
 import MusicVideoSection from '../components/Sections/MusicVideoSection';
 import './HomePage.css';
 import _ from 'lodash';
@@ -103,37 +103,14 @@ const HomePage = () => {
     }, 3000);
   };
 
-  // return (
-  //   <div
-  //     className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
-  //     onMouseMove={(e) => handleMouseMove(e)}
-  //   >
-  //     <div className='scroll-container'>
-  //       <CurrentlyPlayingSection song={currentlyPlayingSong} />
-  //       <RecommendedSection song={recommendedSong} />
-  //       <LyricsSection song={currentlyPlayingSong} />
-  //       {/* <MusicVideoSection
-  //         className='section'
-  //         song={currentlyPlayingSong}
-  //       ></MusicVideoSection> */}
-  //     </div>
-  //     <div className='updownkeys-img'>
-  //       <img src={updownkeys} alt='' />
-  //     </div>
-  //   </div>
-  // );
   const FullPage = () => (
     <ReactFullpage
       render={({ state, fullpageApi }) => {
         return (
           <ReactFullpage.Wrapper>
-            <CurrentlyPlayingSection
-              className='section'
-              song={currentlyPlayingSong}
-            />
-            <div className='section'>
-              <p>something 2</p>
-            </div>
+            <CurrentlyPlayingSection song={currentlyPlayingSong} />
+            <RecommendedSection song={recommendedSong} />
+            <MusicVideoSection song={currentlyPlayingSong} />
           </ReactFullpage.Wrapper>
         );
       }}
