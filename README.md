@@ -1,3 +1,5 @@
+A music player envisioned for the TV in living rooms, parties, and other big screens.
+
 ## Hosted it at [https://thevibecheck.netlify.com](https://thevibecheck.netlify.com)
 
 ## Features
@@ -19,3 +21,9 @@
 - Youtube API
 - Spotify API
 - ReactJS
+
+## Next Steps
+- In sync Youtube and Spotify Player
+- 2D/3D Music visualizations
+- Augmented Reality
+- A tvOS app
