@@ -3,7 +3,7 @@ import { rgbToHex } from '../../utils/functions';
 import { queueAndPlaySong } from '../../utils/API';
 import ColorThief from 'colorthief';
 import * as IoIcons from 'react-icons/io';
-import * as BsIcons from 'react-icons/bs';
+// import * as BsIcons from 'react-icons/bs';
 import './Section.css';
 
 const CurrentlyPlayingSection = (props) => {
@@ -11,7 +11,7 @@ const CurrentlyPlayingSection = (props) => {
   const [imgInlineStyle, setImgInlineStyle] = useState({
     filter: `drop-shadow(5px 5px 5px black)`,
   });
-  const [isLoaded, setIsLoaded] = useState(false);
+//   const [isLoaded, setIsLoaded] = useState(false);
   const song = props.song;
   const type = song.type;
 
