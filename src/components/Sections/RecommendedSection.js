@@ -10,7 +10,7 @@ const RecommendedSection = (props) => {
   const [imgInlineStyle, setImgInlineStyle] = useState({
     filter: `drop-shadow(5px 5px 5px black)`,
   });
-  const [isLoaded, setIsLoaded] = useState(false);
+//   const [isLoaded, setIsLoaded] = useState(false);
   const song = props.song;
   const type = song.type;
 
