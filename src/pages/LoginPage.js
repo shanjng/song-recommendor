@@ -4,7 +4,7 @@ import * as QueryString from 'query-string';
 import { useHistory } from 'react-router-dom';
 import './LoginPage.css';
 import logo from '../assets/anime-girl-music.png';
-import * as GiIcons from 'react-icons/gi';
+// import * as GiIcons from 'react-icons/gi';
 
 const LoginPage = () => {
   var scope =
