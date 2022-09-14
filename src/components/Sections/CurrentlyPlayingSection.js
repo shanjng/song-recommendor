@@ -39,7 +39,7 @@ const CurrentlyPlayingSection = (props) => {
 
   const handleLoaded = () => {
     paletteUpdate();
-    setIsLoaded(true);
+//     setIsLoaded(true);
   };
 
   return (
