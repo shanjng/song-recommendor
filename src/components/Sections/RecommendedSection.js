@@ -36,7 +36,7 @@ const RecommendedSection = (props) => {
 
   const handleLoaded = () => {
     paletteUpdate();
-    setIsLoaded(true);
+//     setIsLoaded(true);
   };
 
   return (
