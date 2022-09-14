@@ -8,7 +8,7 @@ import LyricsSection from '../components/Sections/LyricsSection';
 import MusicVideoSection from '../components/Sections/MusicVideoSection';
 import './HomePage.css';
 import _ from 'lodash';
-import ReactFullpage from '@fullpage/react-fullpage';
+// import ReactFullpage from '@fullpage/react-fullpage';
 import updownkeys from '../assets/up-down-keys.png';
 
 const HomePage = () => {
