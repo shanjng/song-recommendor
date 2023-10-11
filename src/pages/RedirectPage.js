@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getHashParams } from '../utils/functions';
 
-const RedirectPage = (props) => {
+const RedirectPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [didGrabHashParams, setDidGrabHashParams] = useState(false);
+
+  useEffect(() => {
+    if (didGrabHashParams) {
+      navigate('/');
+    }
+  });
+
   try {
-    const hashParams = getHashParams(props.location.hash);
-    // console.log("hash params are: ", hashParams);
+    const hashParams = getHashParams(location.hash);
     const expiryTime = new Date().getTime() + hashParams.expires_in * 1000;
     localStorage.setItem('params', JSON.stringify(hashParams));
     localStorage.setItem('expiry_time', expiryTime);
-    props.history.push('/');
+    if (!didGrabHashParams) {
+      setDidGrabHashParams(true);
+    }
   } catch (error) {
     return <div>Error</div>;
   }

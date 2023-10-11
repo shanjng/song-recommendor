@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { generateRandomString, isValidSession } from '../utils/functions';
-import * as QueryString from 'query-string';
-import { useHistory } from 'react-router-dom';
+import QueryString from 'query-string';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import logo from '../assets/anime-girl-music.png';
 // import * as GiIcons from 'react-icons/gi';
@@ -10,13 +10,13 @@ const LoginPage = () => {
   var scope =
     'user-read-private user-read-email user-read-currently-playing user-modify-playback-state';
   var state = generateRandomString(16);
-  var history = useHistory();
+  var navigate = useNavigate();
 
   useEffect(() => {
     let isValidSessionBool = isValidSession();
 
     if (isValidSessionBool) {
-      history.push('/home');
+      navigate('/');
     }
   });
 
@@ -25,6 +25,10 @@ const LoginPage = () => {
       process.env.REACT_APP_TESTING === 'true'
         ? 'http://localhost:3000/redirect'
         : `https://${window.location.hostname}/redirect`;
+
+    // const redirect_uri = true // for testing
+    //   ? 'http://localhost:3000/redirect'
+    //   : `https://${window.location.hostname}/redirect`;
 
     var redirectURL =
       'https://accounts.spotify.com/authorize?' +
@@ -40,10 +44,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='login'>
-      <img src={logo} alt='' />
+    <div className="login">
+      <img src={logo} alt="" />
       <p>
-        <button className='spotify-login' type='submit' onClick={handleLogin}>
+        <button className="spotify-login" type="submit" onClick={handleLogin}>
           {/* <GiIcons.GiBrainFreeze></GiIcons.GiBrainFreeze> */}
           LOGIN
         </button>

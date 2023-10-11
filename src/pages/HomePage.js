@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { isValidSession } from '../utils/functions';
 import { getCurrentlyPlaying, getRecommendations } from '../utils/API';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CurrentlyPlayingSection from '../components/Sections/CurrentlyPlayingSection';
 import RecommendedSection from '../components/Sections/RecommendedSection';
 import LyricsSection from '../components/Sections/LyricsSection';
@@ -32,16 +32,16 @@ const HomePage = () => {
   // const sectionStates = { currentlyPlaying: firstLoaded, recommended: secondLoaded, lyrics: thirdLoaded };
   // const setters = { currentlyPlaying: setFirstLoaded, recommended: setSecondLoaded, lyrics: setThirdLoaded };
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  // useEffect(() => console.log("Rerendering Home Page"));
+  useEffect(() => console.log('Rerendering Home Page'));
 
   useEffect(() => {
     const updateSongs = async () => {
       const isValidSessionBool = isValidSession();
 
       if (!isValidSessionBool) {
-        history.push('/login');
+        navigate('/login');
         return;
       }
 
@@ -95,7 +95,7 @@ const HomePage = () => {
     const timer = setInterval(updateSongs, 1000);
 
     return () => clearInterval(timer);
-  }, [currentlyPlayingSong, history]);
+  }, [currentlyPlayingSong, navigate]);
 
   var timer;
   const handleMouseMove = (e) => {
@@ -124,20 +124,20 @@ const HomePage = () => {
       className={'home' + (mouseIdle ? ' mouse-idle' : ' mouse-active')}
       onMouseMove={(e) => handleMouseMove(e)}
     >
-      <div className='scroll-container'>
+      <div className="scroll-container">
         <CurrentlyPlayingSection
-          className='section'
+          className="section"
           song={currentlyPlayingSong}
         />
-        <RecommendedSection className='section' song={recommendedSong} />
-        <LyricsSection className='section' song={currentlyPlayingSong} />
+        <RecommendedSection className="section" song={recommendedSong} />
+        {/* COMMENT THIS OUT IT BLOCKS OTHER SECTIONS <LyricsSection className="section" song={currentlyPlayingSong} /> */}
         <MusicVideoSection
-          className='section'
+          className="section"
           song={currentlyPlayingSong}
         ></MusicVideoSection>
       </div>
-      <div className='updownkeys-img'>
-        <img src={updownkeys} alt='' />
+      <div className="updownkeys-img">
+        <img src={updownkeys} alt="" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -17,18 +17,18 @@ function App() {
 
   return (
     <Router>
-      <div className='App'>
+      <div className="App">
         {window.location.pathname === '/login' ? null : (
-          <Navbar className='navbar' />
+          <Navbar className="navbar" />
         )}
 
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/redirect' component={RedirectPage} />
-          <Route path='/playlists' component={PlaylistsPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/redirect" element={<RedirectPage />} />
+          <Route path="/playlists" element={<PlaylistsPage />} />
+          <Route element={<NotFoundPage />} />
+        </Routes>
       </div>
     </Router>
   );

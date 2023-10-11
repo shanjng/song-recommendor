@@ -14,6 +14,7 @@ const MusicVideoSection = (props) => {
   useEffect(() => {
     if (!song || song.name === 'No Song Playing') return;
 
+    console.log('Making getMusicVideo call()');
     getMusicVideo(song.name, song.artists[0])
       .then((result) => {
         if (!result) return;
@@ -30,17 +31,17 @@ const MusicVideoSection = (props) => {
   }, [song]);
 
   return (
-    <div className='section'>
-      <div className='info'>
+    <div className="section">
+      <div className="info">
         <p>
           {song.name === 'No Song Playing'
             ? ''
             : `${song.name} - ${song.artists}`}
         </p>
         <iframe
-          title='music video'
-          width='70%'
-          height='80%'
+          title="music video"
+          width="70%"
+          height="80%"
           src={videoUrl}
         ></iframe>
       </div>
